@@ -1,0 +1,8 @@
+# Adjuntos de la practica: fuentes originales, no forman parte de la app publicada
+*.zip
+exampleWebApp_with_*/
+instrucciones.txt
+captures/
+
+# Artefactos de verificacion en navegador
+.playwright-mcp/
