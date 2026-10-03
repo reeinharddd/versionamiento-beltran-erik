@@ -1,79 +1,81 @@
-//Function to load products from LocalStorage and display them in the table
-function loadProductTable() {
-    let products = JSON.parse(localStorage.getItem('products')) || []; //Search and found products from LocalStorage
-    const tableBody = document.querySelector('#productsTable tbody');
-    tableBody.innerHTML = ''; //Clear the table before adding new products
+const STORAGE_KEY = 'nightShiftActivities';
 
-    products.forEach(product => {
-        //Create a table row
+function readActivities() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+}
+
+function saveActivities(activities) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(activities));
+}
+
+function setFormAviso(mensaje) {
+    const aviso = document.getElementById('formAviso');
+    aviso.textContent = mensaje;
+    aviso.hidden = false;
+}
+
+function hideFormAviso() {
+    document.getElementById('formAviso').hidden = true;
+}
+
+// Load activities from LocalStorage and display them in the table
+function loadActivities() {
+    const activities = readActivities();
+    const tableBody = document.querySelector('#activitiesTable tbody');
+    tableBody.innerHTML = '';
+
+    activities.forEach(activity => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${product.id}</td>
-            <td>${product.name}</td>
-            <td>$${product.price}</td>
-            <td><button class="delete-btn" data-id="${product.id}">Delete</button></td>
+            <td>${activity.id}</td>
+            <td>${activity.name}</td>
+            <td>${activity.duration} min</td>
+            <td><button class="delete-btn" data-id="${activity.id}">Eliminar</button></td>
         `;
-        
-        //Append the row to the table
         tableBody.appendChild(row);
     });
 
-    //Add event listeners for delete buttons
     document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', deleteProduct);
+        button.addEventListener('click', deleteActivity);
     });
 }
 
-// Function to add a new product
-function addProduct() {
+// Add a new activity to the night shift
+function addActivity() {
     const name = document.getElementById('name').value.trim();
-    const price = parseFloat(document.getElementById('price').value);
+    const duration = parseInt(document.getElementById('duration').value, 10);
 
-    // Validate inputs
-    if (!name || isNaN(price) || price <= 0) {
-        alert("Please enter a valid name and price.");
+    if (!name || isNaN(duration) || duration <= 0) {
+        setFormAviso('Escribe una actividad y una duración mayor a 0.');
         return;
     }
+    hideFormAviso();
 
-    //Create the new product with unique ID
-    let products = JSON.parse(localStorage.getItem('products')) || []; // || [] is used to provide a default value in case the first part (localStorage.getItem('products')) returns null or undefined
-    const newProduct = {
-        id: products.length > 0 ? products[products.length - 1].id + 1 : 1, // Assign an incremental ID
+    const activities = readActivities();
+    const newActivity = {
+        id: activities.length > 0 ? activities[activities.length - 1].id + 1 : 1,
         name: name,
-        price: price
+        duration: duration
     };
 
-    //Add the new product to the products array
-    products.push(newProduct);
+    activities.push(newActivity);
+    saveActivities(activities);
 
-    //Save the updated array (products) to LocalStorage
-    localStorage.setItem('products', JSON.stringify(products));
-
-    //Clear the form fields
     document.getElementById('name').value = '';
-    document.getElementById('price').value = '';
+    document.getElementById('duration').value = '';
 
-    //Update the table with the new product
-    loadProductTable();
+    loadActivities();
 }
 
-//Function to delete a product
-function deleteProduct(event) {
-    const productId = parseInt(event.target.getAttribute('data-id')); // Get the product ID from the button's data attribute
-    let products = JSON.parse(localStorage.getItem('products')) || [];
+// Delete an activity by id
+function deleteActivity(event) {
+    const activityId = parseInt(event.target.getAttribute('data-id'), 10);
+    const activities = readActivities().filter(activity => activity.id !== activityId);
 
-    //Filter out the product with the corresponding ID
-    products = products.filter(product => product.id !== productId);
-
-    // Save the updated list back to LocalStorage
-    localStorage.setItem('products', JSON.stringify(products));
-
-    // Reload the product table to reflect changes
-    loadProductTable();
+    saveActivities(activities);
+    loadActivities();
 }
 
-//Event listener for the button click
-document.getElementById('addProduct').addEventListener('click', addProduct);
+document.getElementById('addActivity').addEventListener('click', addActivity);
 
-//Load products when the page loads
-loadProductTable();
+loadActivities();
