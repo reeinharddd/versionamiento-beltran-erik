@@ -18,26 +18,44 @@ function hideFormAviso() {
     document.getElementById('formAviso').hidden = true;
 }
 
-// Load activities from LocalStorage and display them in the table
+// Load activities from LocalStorage and display them as timeline blocks
 function loadActivities() {
     const activities = readActivities();
-    const tableBody = document.querySelector('#activitiesTable tbody');
-    tableBody.innerHTML = '';
+    const blocks = document.getElementById('blocks');
+    blocks.innerHTML = '';
+
+    const maxDuration = activities.reduce((max, activity) => Math.max(max, activity.duration), 0);
 
     activities.forEach(activity => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${activity.id}</td>
-            <td>${activity.name}</td>
-            <td>${activity.duration} min</td>
-            <td><button class="delete-btn" data-id="${activity.id}">Eliminar</button></td>
+        const width = maxDuration > 0 ? Math.round((activity.duration / maxDuration) * 100) : 0;
+
+        const block = document.createElement('article');
+        block.className = 'block';
+        block.innerHTML = `
+            <div class="blockHead">
+                <span class="blockId">${String(activity.id).padStart(2, '0')}</span>
+                <span class="blockName">${activity.name}</span>
+                <span class="blockDuration">${activity.duration} MIN</span>
+            </div>
+            <div class="barTrack"><div class="barFill" style="width: ${width}%"></div></div>
+            <button type="button" class="delete-btn" data-id="${activity.id}">ELIMINAR</button>
         `;
-        tableBody.appendChild(row);
+        blocks.appendChild(block);
     });
 
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener('click', deleteActivity);
     });
+
+    document.getElementById('emptyState').hidden = activities.length > 0;
+    updateStats(activities);
+}
+
+// Update the schedule metrics
+function updateStats(activities) {
+    const total = activities.reduce((sum, activity) => sum + activity.duration, 0);
+    document.getElementById('statBlocks').textContent = String(activities.length).padStart(2, '0');
+    document.getElementById('statMinutes').textContent = String(total).padStart(3, '0');
 }
 
 // Add a new activity to the night shift

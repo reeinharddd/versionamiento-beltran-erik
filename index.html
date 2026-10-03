@@ -14,6 +14,12 @@
         <p class="tagline">ORGANIZA TU NOCHE. NO PIERDAS EL RITMO.</p>
     </header>
 
+    <section class="stats" aria-label="Resumen del turno">
+        <div class="statCard"><span id="statBlocks" class="statValue">00</span><span class="statLabel">BLOQUES</span></div>
+        <div class="statCard"><span id="statMinutes" class="statValue">00</span><span class="statLabel">MINUTOS</span></div>
+        <div class="statCard"><span class="statValue statMode">NIGHT</span><span class="statLabel">ACTIVE</span></div>
+    </section>
+
     <div class="container">
 
         <div class="formContainer">
@@ -29,19 +35,11 @@
             <p id="formAviso" class="formAviso" hidden></p>
         </div>
 
-        <table id="activitiesTable">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Actividad</th>
-                    <th>Duración</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
+        <section class="timeline">
+            <h2>NIGHT TIMELINE</h2>
+            <div id="blocks"></div>
+            <p id="emptyState" class="emptyState" hidden>Sin bloques todavía. Agrega tu primera actividad del turno.</p>
+        </section>
     </div>
 
     <script src="functions.js"></script>
