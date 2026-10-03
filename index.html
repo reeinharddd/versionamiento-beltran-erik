@@ -9,33 +9,40 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="ticker" aria-hidden="true"><div class="tickerInner"><span>TURNO 01 +++ PLANIFICA +++ EJECUTA +++ SIN PAUSAS +++ TURNO 01 +++ PLANIFICA +++ EJECUTA +++ SIN PAUSAS +++&nbsp;</span><span>TURNO 01 +++ PLANIFICA +++ EJECUTA +++ SIN PAUSAS +++ TURNO 01 +++ PLANIFICA +++ EJECUTA +++ SIN PAUSAS +++&nbsp;</span></div></div>
+    <div class="ticker" aria-hidden="true"><div class="tickerInner"><span>TURNO 01 +++ RITMO CONSTANTE +++ CERO TIEMPO MUERTO +++ TURNO 01 +++ RITMO CONSTANTE +++ CERO TIEMPO MUERTO +++&nbsp;</span><span>TURNO 01 +++ RITMO CONSTANTE +++ CERO TIEMPO MUERTO +++ TURNO 01 +++ RITMO CONSTANTE +++ CERO TIEMPO MUERTO +++&nbsp;</span></div></div>
     <header class="siteHeader">
-        <p class="sessionTag">NIGHT SHIFT // SESSION 01</p>
+        <p class="sessionTag">NIGHT SHIFT // PLANTA 01</p>
         <h1>NIGHT SHIFT</h1>
-        <p class="tagline">ORGANIZA TU NOCHE. NO PIERDAS EL RITMO.</p>
+        <p class="tagline">OPERACIÓN CONTINUA. CERO TIEMPO MUERTO.</p>
         <p class="owner">ERIK ALFONSO BELTRAN RAMIREZ · @reeinharddd</p>
         <p class="status"><span class="statusDot" aria-hidden="true"></span>NIGHT MODE ACTIVE</p>
     </header>
 
     <section class="stats" aria-label="Resumen del turno">
         <div class="statCard"><span id="statBlocks" class="statValue">00</span><span class="statLabel">BLOQUES</span></div>
-        <div class="statCard"><span id="statMinutes" class="statValue">00</span><span class="statLabel">MINUTOS</span></div>
-        <div class="statCard"><span class="statValue statMode">NIGHT</span><span class="statLabel">ACTIVE</span></div>
+        <div class="statCard"><span id="statMinutes" class="statValue">00</span><span id="statMinutesLabel" class="statLabel">PLANIFICADO</span></div>
+        <div class="statCard"><span id="statEstado" class="statValue statMode">EN ESPERA</span><span class="statLabel">ESTADO</span></div>
+    </section>
+
+    <section class="deck" aria-label="Control del turno">
+        <button type="button" id="startBtn">INICIAR TURNO</button>
+        <button type="button" id="pauseBtn" disabled>PAUSAR</button>
+        <button type="button" id="resetBtn">REINICIAR</button>
+        <p id="consigna" class="consigna">TURNO EN ESPERA. REGISTRA BLOQUES Y ARRANCA LA OPERACIÓN.</p>
     </section>
 
     <div class="container">
 
         <div class="formContainer">
-            <h2>NUEVA ACTIVIDAD</h2>
+            <h2>REGISTRAR BLOQUE</h2>
 
-            <label for="name">Actividad:</label>
-            <input type="text" id="name" placeholder="Escribe qué harás esta noche">
+            <label for="name">Bloque:</label>
+            <input type="text" id="name" placeholder="Ej.: Calibración de línea">
 
             <label for="duration">Duración (minutos):</label>
             <input type="number" id="duration" placeholder="60" min="1">
 
-            <button id="addActivity" type="button">+ AGREGAR AL TURNO</button>
+            <button id="addActivity" type="button">+ REGISTRAR BLOQUE</button>
             <p id="formAviso" class="formAviso" hidden></p>
         </div>
 
@@ -49,6 +56,8 @@
     <footer class="siteFooter">
         NIGHT SHIFT · LOCAL SESSION • LOCAL STORAGE · ERIK ALFONSO BELTRAN RAMIREZ • @reeinharddd
     </footer>
+
+    <div id="flash" aria-hidden="true"></div>
 
     <script src="functions.js"></script>
 </body>
