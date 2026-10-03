@@ -55,7 +55,7 @@ function loadActivities() {
 function updateStats(activities) {
     const total = activities.reduce((sum, activity) => sum + activity.duration, 0);
     document.getElementById('statBlocks').textContent = String(activities.length).padStart(2, '0');
-    document.getElementById('statMinutes').textContent = total > 0 ? total + ' MIN' : '00';
+    document.getElementById('statMinutes').textContent = total > 0 ? formatearHora(total * 60) : '00:00';
 }
 
 function addActivity() {
